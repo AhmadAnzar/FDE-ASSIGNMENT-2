@@ -17,3 +17,8 @@ env/
 venv/
 .pytest_cache/
 .ipynb_checkpoints/
+
+# Assignment briefs and instructions
+FDE_Assignment2.pdf
+instructions.md
+
