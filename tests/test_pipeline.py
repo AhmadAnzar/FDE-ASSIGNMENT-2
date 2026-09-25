@@ -58,11 +58,11 @@ def test_validation_removes_invalid_timestamps(sample_zones, valid_trip_row):
     ])
 
     validated = validate(trips, sample_zones, year=2026, month=6)
-    assert validated.loc[0, "is_valid"] == True
-    assert validated.loc[1, "is_valid"] == False
-    assert validated.loc[2, "is_valid"] == False
-    assert validated.loc[3, "is_valid"] == False
-    assert validated["is_valid"].sum() == 1
+    assert bool(validated.loc[0, "is_valid"]) is True
+    assert bool(validated.loc[1, "is_valid"]) is False
+    assert bool(validated.loc[2, "is_valid"]) is False
+    assert bool(validated.loc[3, "is_valid"]) is False
+    assert int(validated["is_valid"].sum()) == 1
 
 
 def test_validation_removes_nonpositive_distance(sample_zones, valid_trip_row):
@@ -74,10 +74,10 @@ def test_validation_removes_nonpositive_distance(sample_zones, valid_trip_row):
     ])
 
     validated = validate(trips, sample_zones, year=2026, month=6)
-    assert validated.loc[0, "is_valid"] == True
-    assert validated.loc[1, "is_valid"] == False
-    assert validated.loc[2, "is_valid"] == False
-    assert validated["is_valid"].sum() == 1
+    assert bool(validated.loc[0, "is_valid"]) is True
+    assert bool(validated.loc[1, "is_valid"]) is False
+    assert bool(validated.loc[2, "is_valid"]) is False
+    assert int(validated["is_valid"].sum()) == 1
 
 
 def test_total_amount_filter(sample_zones, valid_trip_row):
@@ -92,7 +92,7 @@ def test_total_amount_filter(sample_zones, valid_trip_row):
     enriched = enrich(validated, sample_zones)
 
     assert len(enriched) == 1
-    assert enriched.iloc[0]["total_amount"] == 25.0
+    assert float(enriched.iloc[0]["total_amount"]) == 25.0
 
 
 def test_zone_join_does_not_duplicate_rows(sample_zones, valid_trip_row):
@@ -107,12 +107,12 @@ def test_zone_join_does_not_duplicate_rows(sample_zones, valid_trip_row):
     enriched = enrich(validated, sample_zones)
 
     assert len(enriched) == len(trips)
-    assert enriched.duplicated().sum() == 0
+    assert int(enriched.duplicated().sum()) == 0
     assert "PU_Zone" in enriched.columns
     assert "DO_Zone" in enriched.columns
     # Unknown LocationID 264 gets filled with 'Unknown'
     unknown_row = enriched[enriched["PULocationID"] == 264].iloc[0]
-    assert unknown_row["PU_Zone"] == "Unknown"
+    assert str(unknown_row["PU_Zone"]) == "Unknown"
 
 
 def test_zone_delay_index_calculation(sample_zones):
@@ -124,7 +124,7 @@ def test_zone_delay_index_calculation(sample_zones):
     rows = []
     base_time = pd.Timestamp("2026-06-15 12:00:00")
 
-    for i in range(3000):
+    for _ in range(3000):
         # Zone 1: 10 min
         rows.append({
             "VendorID": 1, "tpep_pickup_datetime": base_time,
@@ -159,8 +159,8 @@ def test_zone_delay_index_calculation(sample_zones):
     astoria = zone_kpi[zone_kpi["PU_Zone"] == "Astoria"].iloc[0]
     midtown = zone_kpi[zone_kpi["PU_Zone"] == "Midtown"].iloc[0]
 
-    assert pytest.approx(astoria["delay_index"], rel=1e-2) == 1.33
-    assert pytest.approx(midtown["delay_index"], rel=1e-2) == 0.67
+    assert pytest.approx(float(astoria["delay_index"]), rel=1e-2) == 1.33
+    assert pytest.approx(float(midtown["delay_index"]), rel=1e-2) == 0.67
 
 
 def test_pipeline_assertions():
@@ -181,3 +181,7 @@ def test_pipeline_assertions():
     # Corrupted: validated > raw -> raises AssertionError
     with pytest.raises(AssertionError, match="exceed raw rows"):
         run_assertions(raw_count=50, validated_count=60, final=dummy_final, zone_kpi=dummy_zone_kpi)
+
+
+if __name__ == "__main__":
+    pytest.main(["-v", __file__])

@@ -178,7 +178,7 @@ stateDiagram-v2
 | 4 | Valid pickup zone | `PULocationID` in zone lookup | Required for zone enrichment and delay index calculation |
 | 5 | Valid dropoff zone | `DOLocationID` in zone lookup | Required for complete trip spatial attribution |
 
-**Combined**: all five rules must be True → `is_valid = True`
+**Combined**: all five rules must be True -> `is_valid = True`
 
 **Additional analytical filter**: `total_amount > 0` - removes 12,932 records interpreted as refund or adjustment entries. Applied after core validation.
 
@@ -186,34 +186,23 @@ stateDiagram-v2
 
 ## Known / Unknown / Assumption / Limitation (KUAL)
 
-### Known
-
-- **4.61% of raw records fail core validation** (176,773 rows). Individual rule failure counts for June 2026: zero or negative trip distance (128,106 failures - largest single category), non-positive duration / dropoff not after pickup (49,807), and pickup dates outside the target month (17). A single record can fail multiple rules simultaneously; the combined `is_valid` failure count (176,773) reflects rows failing any rule. All failures are flagged explicitly, not silently dropped.
-- **3,654 pickup zones and 3,389 drop-off zones remain "Unknown"** after zone enrichment. These trips passed validation (PULocationID is in the zone lookup) but the lookup entry itself has no Borough or Zone name (LocationID 264 = "N/A"). They are retained in the analytical dataset but excluded from zone KPI rankings.
-- **12,932 records with `total_amount <= 0`** are removed as a secondary analytical filter. These are interpreted as vendor-issued refunds or billing adjustments. They are logged in `quality_audit.csv`.
-- **Zone KPI rankings only include zones with ≥ 3,000 trips** in the month. This threshold excludes low-volume zones where the median is statistically unreliable.
-
-### Unknown
-
-- **Why East Elmhurst (2.36x) and the other high-delay zones have elevated durations.** The data cannot distinguish between traffic congestion, trip-type composition (longer routes), driver behaviour, or infrastructure factors.
-- **Whether June 2026 delay patterns are typical.** A single month provides no seasonality or trend context.
-- **Whether high delay at a zone is driven by conditions at pickup or during transit.** Only pickup zone is available as the spatial grouper; the full route is not recorded.
-- **Demand suppression.** Riders who attempted but failed to get a taxi at a high-delay zone are invisible in this dataset.
-
-### Assumptions
-
-- **`total_amount > 0` is a reliable proxy for excluding refund/adjustment records.** It is possible that some legitimate low-cost trips are excluded. However, the `total_amount` field reflects the full economic value of a trip including all surcharges; a positive total is a necessary condition for a genuine completed trip in the operational sense.
-- **The non-airport median (13.60 min) is an appropriate citywide baseline.** Airport zones (JFK, LaGuardia, Newark) are excluded because they represent fixed long-haul routes that would artificially inflate the baseline and suppress the signal for delay in urban zones.
-- **Zones with ≥ 3,000 trips in a single month are large enough to produce a stable median.** The 3,000-trip threshold is an operational choice, not a statistical guarantee.
-- **The zone lookup table is authoritative and complete for NYC yellow taxi zones.** Two entries (LocationID 264, 265) have no usable metadata; this is treated as a known data gap, not a pipeline failure.
-- **Missing `passenger_count`, `RatecodeID`, `store_and_fwd_flag`, `congestion_surcharge`, and `Airport_fee` values** (present in ~26% of records, tied to specific VendorIDs) do not affect trip validity for the purposes of this analysis. These fields are not used in the Zone Delay Index calculation.
-
-### Limitations
-
-- **Single month of data (June 2026)** - results cannot be generalised across seasons, years, or special events.
-- **Trip duration is a proxy, not a direct delay measure.** Duration conflates distance, speed, and routing. A zone with many long-distance trips will show high median duration regardless of congestion.
-- **The Zone Delay Index is a relative, not an absolute measure.** A zone at 2.36x is flagged for investigation, but the index does not indicate what the "correct" duration should be.
-- **No causal inference is possible** from this analysis. The output is a prioritisation signal, not an explanation.
+| Category | Factor / Condition | Operational Impact & Handling |
+|---|---|---|
+| **Known** | 4.61% validation failure rate (176,773 rows) | Driven by zero/negative distance (128,106) and duration <= 0 (49,807). Flagged via `is_valid`, not silently dropped. |
+| | 12,932 records with `total_amount <= 0` | Secondary billing filter; excluded as non-revenue adjustments, cancellations, or refunds. |
+| | 3,654 PU and 3,389 DO zones with missing metadata | LocationID 264/265 ("N/A"); retained in totals with zone filled as "Unknown", excluded from zone rankings. |
+| | Zone qualification threshold: >= 3,000 trips | Excludes thin-sample zones so small-number variance does not generate false delay signals (79 zones qualify). |
+| **Unknown** | Causal mechanism behind high delay | Telemetry does not record road construction, street-level bottlenecks, route choice, or weather. |
+| | Temporal representativeness | Single-month cross-section; cannot determine whether June 2026 patterns persist seasonally. |
+| | Delay locus (origin vs en route) | Only origin and destination are recorded; cannot isolate curbside congestion from arterial delay. |
+| | Unmet / suppressed rider demand | Potential passengers who failed to hail a cab or abandoned queues are absent from metered records. |
+| **Assumption** | `total_amount > 0` isolates completed trips | Positive gross fare reflects completed commercial passenger service rather than an administrative record. |
+| | 13.60 min non-airport median is the true baseline | Removing airport trips (JFK, LGA, EWR) prevents long-haul highway runs from inflating the urban benchmark. |
+| | Threshold of >= 3,000 trips ensures stability | Operational volume cutoff balancing statistical median stability with broad urban coverage. |
+| | Optional field missingness (~26%) is benign | Missing vendor fields (`passenger_count`, `RatecodeID`, surcharges) do not impact duration or spatial metrics. |
+| **Limitation** | Single-month observational window (June 2026) | Results cannot be generalized across winter weather, holiday patterns, or citywide grid changes. |
+| | Duration conflates distance and congestion | Zones generating longer-distance trips naturally show higher median durations regardless of traffic speed. |
+| | Non-causal prioritization index | The Zone Delay Index flags zones for targeted field investigation; it does not prove why delay occurs. |
 
 ---
 
@@ -233,36 +222,39 @@ FDE-ASST2/
 │   ├── transform.py              ← Analytical filter (total_amount > 0) & zone enrichment
 │   ├── metrics.py                ← Zone Delay Index, hourly metrics & KPI calculations
 │   └── cli.py                    ← Argument parsing, 7 assertions, runner & output saving
-│
-├── docs/                         ← Standalone Documentation & Evidence
-│   ├── source_map.md             ← Data sources, grain, retrieval methods & gaps
-│   ├── workflow_and_data_model.md ← Mermaid workflow, ER data model & event states
-│   ├── validation_rules.md       ← 5 validation rules, failure counts & rationale
-│   └── run_logs/                 ← Real pipeline execution logs
-│       ├── successful_run.log    ← June 2026 successful pipeline execution
-│       └── validation_failure_example.log ← Intentionally triggered validation failure
+├── docs/                         ← Execution Run Logs
+│   └── run_logs/
+│       └── successful_run.log    ← Real verified June 2026 pipeline execution log
 │
 ├── tests/                        ← Automated Unit Tests
 │   └── test_pipeline.py          ← 6 focused tests (validation, filtering, joins, KPIs)
 │
 ├── notebooks/
-│   └── NYC_TLC_Analysis.ipynb    ← Reorganized 11-section EDA & analysis notebook
+│   └── NYC_TLC_Analysis.ipynb    ← Exploratory/analytical walkthrough in 11 sections
 │
 ├── data/
 │   └── taxi_zone_lookup.csv      ← Zone reference data (static input, committed)
 │
-├── outputs/                      ← Pre-computed June 2026 results (committed)
-│   ├── final_kpis.csv
-│   ├── hourly_metrics.csv
-│   ├── zone_kpi.csv
-│   └── quality_audit.csv
+├── outputs/                      ← Pre-computed June 2026 committed evidence files
+│   ├── final_kpis.csv            ← 11 summary metrics table
+│   ├── hourly_metrics.csv        ← Hourly trip volumes and durations
+│   ├── zone_kpi.csv              ← Zone Delay Index ranking table
+│   ├── quality_audit.csv         ← Data quality audit counts
+│   ├── hourly_trip_demand.png    ← Hourly demand distribution chart
+│   ├── hourly_duration.png       ← Hourly median vs P90 duration chart
+│   └── top_zone_delay_index.png  ← Top 10 high-delay zones chart
 │
 └── [not committed to GitHub]
-    ├── final_trips.parquet       ← Large enriched dataset (~88 MB) - generated by pipeline
-    └── raw/yellow_tripdata_*.parquet ← Raw TLC source file - downloaded by pipeline
+    ├── output/YYYY-MM/           ← Dynamic runtime output directory created when running pipeline.py
+    ├── final_trips.parquet       ← Large enriched dataset (~88 MB) - generated at runtime
+    └── raw/yellow_tripdata_*.parquet ← Raw TLC source file - downloaded at runtime
 ```
 
-> **Note on large files**: `final_trips.parquet` and the raw TLC parquet are not committed to the repository due to size. The pipeline downloads the raw TLC file automatically and regenerates all outputs from scratch.
+> **Data & Output Conventions**:
+> * **Committed Evidence (`outputs/`)**: Contains verified June 2026 result artifacts (CSVs and PNG charts) for direct evaluation without running code.
+> * **Runtime Pipeline Output (`output/YYYY-MM/`)**: Default output destination when executing `python pipeline.py`. Files generated here (`final_trips.parquet`, raw source files) are excluded from Git via `.gitignore`.
+> * **Exploratory Walkthrough (`notebooks/`)**: The Jupyter notebook provides the detailed step-by-step EDA, data profiling, validation analysis, and operational findings.
+> * **Documentation (`docs/`)**: Houses supplementary technical evidence, source mapping, metric definitions, Mermaid diagrams, and real execution run logs.
 
 ---
 
