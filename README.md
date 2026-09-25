@@ -254,7 +254,7 @@ FDE-ASST2/
 > * **Committed Evidence (`outputs/`)**: Contains verified June 2026 result artifacts (CSVs and PNG charts) for direct evaluation without running code.
 > * **Runtime Pipeline Output (`output/YYYY-MM/`)**: Default output destination when executing `python pipeline.py`. Files generated here (`final_trips.parquet`, raw source files) are excluded from Git via `.gitignore`.
 > * **Exploratory Walkthrough (`notebooks/`)**: The Jupyter notebook provides the detailed step-by-step EDA, data profiling, validation analysis, and operational findings.
-> * **Documentation (`docs/`)**: Houses supplementary technical evidence, source mapping, metric definitions, Mermaid diagrams, and real execution run logs.
+> * **Documentation (`docs/`)**: Houses real pipeline execution run logs (technical documentation, source map, validation rules, and Mermaid architecture diagrams are consolidated in this README).
 
 ---
 
