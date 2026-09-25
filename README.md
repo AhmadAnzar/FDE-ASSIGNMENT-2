@@ -1,6 +1,6 @@
-# NYC TLC Yellow Taxi — Zone Trip Duration Delay Analysis
+# NYC TLC Yellow Taxi - Zone Trip Duration Delay Analysis
 
-**FDE Data Foundations Assignment 2 | Track B — NYC TLC**
+**FDE Data Foundations Assignment 2 | Track B - NYC TLC**
 
 ---
 
@@ -14,7 +14,7 @@
 
 | Stakeholder | Interest |
 |---|---|
-| NYC Taxi & Limousine Commission (TLC) — Operations & Planning | Identifying pickup zones that may warrant further investigation or attention |
+| NYC Taxi & Limousine Commission (TLC) - Operations & Planning | Identifying pickup zones that may warrant further investigation or attention |
 | TLC Analytics / Data Governance team | Confirming that the monthly trip dataset meets quality standards before operational use |
 
 ---
@@ -45,14 +45,14 @@ Zone Delay Index = zone median trip duration (min)
 
 ## Final Evidence Table
 
-*Based on June 2026 NYC TLC Yellow Taxi data — 3,647,543 analytical trips*
+*Based on June 2026 NYC TLC Yellow Taxi data - 3,647,543 analytical trips*
 
 | # | Metric | Value | Purpose |
 |---|---|---|---|
-| 1 | **Core Valid Trip Rate** | 95.39% | Data quality gate — confirms pipeline output is trustworthy |
+| 1 | **Core Valid Trip Rate** | 95.39% | Data quality gate - confirms pipeline output is trustworthy |
 | 2 | **Citywide Non-Airport Median Trip Duration** | 13.60 min | Baseline denominator for the Zone Delay Index |
-| 3 | **Zone Delay Index — Highest zone (East Elmhurst)** | **2.36×** | Primary KPI: median duration 32.13 min vs. 13.60 min baseline |
-| 4 | **Zone P90 Trip Duration — East Elmhurst** | 56.11 min | Tail severity: worst-decile rider experience in the highest-delay zone |
+| 3 | **Zone Delay Index - Highest zone (East Elmhurst)** | **2.36x** | Primary KPI: median duration 32.13 min vs. 13.60 min baseline |
+| 4 | **Zone P90 Trip Duration - East Elmhurst** | 56.11 min | Tail severity: worst-decile rider experience in the highest-delay zone |
 | 5 | **Peak Demand Hour / Peak Hour Trips** | 18:00 / 231,529 trips | Operational context: flags the hour when demand pressure is highest |
 
 *Full zone rankings available in `zone_kpi.csv` (79 qualifying zones with ≥ 3,000 trips each for June 2026)*
@@ -89,10 +89,10 @@ graph TD
 
 ### Important Source Gaps
 
-- No real-time or near-real-time availability — data is published ~2 months after the trip month
-- No driver or vehicle identifiers — cannot attribute patterns to individual drivers or fleets
-- No weather, events, or road-condition data — cannot explain *why* a zone has higher delay
-- No demand-side data — riders who could not get a taxi are invisible in this dataset
+- No real-time or near-real-time availability - data is published ~2 months after the trip month
+- No driver or vehicle identifiers - cannot attribute patterns to individual drivers or fleets
+- No weather, events, or road-condition data - cannot explain *why* a zone has higher delay
+- No demand-side data - riders who could not get a taxi are invisible in this dataset
 
 ---
 
@@ -180,7 +180,7 @@ stateDiagram-v2
 
 **Combined**: all five rules must be True → `is_valid = True`
 
-**Additional analytical filter**: `total_amount > 0` — removes 12,932 records interpreted as refund or adjustment entries. Applied after core validation.
+**Additional analytical filter**: `total_amount > 0` - removes 12,932 records interpreted as refund or adjustment entries. Applied after core validation.
 
 ---
 
@@ -188,14 +188,14 @@ stateDiagram-v2
 
 ### Known
 
-- **4.61% of raw records fail core validation** (176,773 rows). Individual rule failure counts for June 2026: zero or negative trip distance (128,106 failures — largest single category), non-positive duration / dropoff not after pickup (49,807), and pickup dates outside the target month (17). A single record can fail multiple rules simultaneously; the combined `is_valid` failure count (176,773) reflects rows failing any rule. All failures are flagged explicitly, not silently dropped.
+- **4.61% of raw records fail core validation** (176,773 rows). Individual rule failure counts for June 2026: zero or negative trip distance (128,106 failures - largest single category), non-positive duration / dropoff not after pickup (49,807), and pickup dates outside the target month (17). A single record can fail multiple rules simultaneously; the combined `is_valid` failure count (176,773) reflects rows failing any rule. All failures are flagged explicitly, not silently dropped.
 - **3,654 pickup zones and 3,389 drop-off zones remain "Unknown"** after zone enrichment. These trips passed validation (PULocationID is in the zone lookup) but the lookup entry itself has no Borough or Zone name (LocationID 264 = "N/A"). They are retained in the analytical dataset but excluded from zone KPI rankings.
 - **12,932 records with `total_amount <= 0`** are removed as a secondary analytical filter. These are interpreted as vendor-issued refunds or billing adjustments. They are logged in `quality_audit.csv`.
 - **Zone KPI rankings only include zones with ≥ 3,000 trips** in the month. This threshold excludes low-volume zones where the median is statistically unreliable.
 
 ### Unknown
 
-- **Why East Elmhurst (2.36×) and the other high-delay zones have elevated durations.** The data cannot distinguish between traffic congestion, trip-type composition (longer routes), driver behaviour, or infrastructure factors.
+- **Why East Elmhurst (2.36x) and the other high-delay zones have elevated durations.** The data cannot distinguish between traffic congestion, trip-type composition (longer routes), driver behaviour, or infrastructure factors.
 - **Whether June 2026 delay patterns are typical.** A single month provides no seasonality or trend context.
 - **Whether high delay at a zone is driven by conditions at pickup or during transit.** Only pickup zone is available as the spatial grouper; the full route is not recorded.
 - **Demand suppression.** Riders who attempted but failed to get a taxi at a high-delay zone are invisible in this dataset.
@@ -210,9 +210,9 @@ stateDiagram-v2
 
 ### Limitations
 
-- **Single month of data (June 2026)** — results cannot be generalised across seasons, years, or special events.
+- **Single month of data (June 2026)** - results cannot be generalised across seasons, years, or special events.
 - **Trip duration is a proxy, not a direct delay measure.** Duration conflates distance, speed, and routing. A zone with many long-distance trips will show high median duration regardless of congestion.
-- **The Zone Delay Index is a relative, not an absolute measure.** A zone at 2.36× is flagged for investigation, but the index does not indicate what the "correct" duration should be.
+- **The Zone Delay Index is a relative, not an absolute measure.** A zone at 2.36x is flagged for investigation, but the index does not indicate what the "correct" duration should be.
 - **No causal inference is possible** from this analysis. The output is a prioritisation signal, not an explanation.
 
 ---
@@ -222,12 +222,31 @@ stateDiagram-v2
 ```
 FDE-ASST2/
 ├── README.md                     ← Main documentation
-├── requirements.txt              ← Python dependencies for pipeline.py
-├── pipeline.py                   ← Standalone runnable pipeline
+├── requirements.txt              ← Python dependencies for pipeline & tests
+├── pipeline.py                   ← Root entry point (invokes pipeline.cli)
 ├── .gitignore                    ← Git exclusion rules for raw data & outputs
 │
+├── pipeline/                     ← Modular Pipeline Package
+│   ├── __init__.py               ← Package initializer
+│   ├── ingest.py                 ← HTTP downloads & SQLite zone lookup ingestion
+│   ├── validate.py               ← 5 business validation rules & quality tracking
+│   ├── transform.py              ← Analytical filter (total_amount > 0) & zone enrichment
+│   ├── metrics.py                ← Zone Delay Index, hourly metrics & KPI calculations
+│   └── cli.py                    ← Argument parsing, 7 assertions, runner & output saving
+│
+├── docs/                         ← Standalone Documentation & Evidence
+│   ├── source_map.md             ← Data sources, grain, retrieval methods & gaps
+│   ├── workflow_and_data_model.md ← Mermaid workflow, ER data model & event states
+│   ├── validation_rules.md       ← 5 validation rules, failure counts & rationale
+│   └── run_logs/                 ← Real pipeline execution logs
+│       ├── successful_run.log    ← June 2026 successful pipeline execution
+│       └── validation_failure_example.log ← Intentionally triggered validation failure
+│
+├── tests/                        ← Automated Unit Tests
+│   └── test_pipeline.py          ← 6 focused tests (validation, filtering, joins, KPIs)
+│
 ├── notebooks/
-│   └── NYC_TLC_Analysis.ipynb    ← Exploratory notebook (EDA + development)
+│   └── NYC_TLC_Analysis.ipynb    ← Reorganized 11-section EDA & analysis notebook
 │
 ├── data/
 │   └── taxi_zone_lookup.csv      ← Zone reference data (static input, committed)
@@ -239,8 +258,8 @@ FDE-ASST2/
 │   └── quality_audit.csv
 │
 └── [not committed to GitHub]
-    ├── final_trips.parquet       ← Large enriched dataset (~88 MB) — generated by pipeline
-    └── raw/yellow_tripdata_*.parquet ← Raw TLC source file — downloaded by pipeline
+    ├── final_trips.parquet       ← Large enriched dataset (~88 MB) - generated by pipeline
+    └── raw/yellow_tripdata_*.parquet ← Raw TLC source file - downloaded by pipeline
 ```
 
 > **Note on large files**: `final_trips.parquet` and the raw TLC parquet are not committed to the repository due to size. The pipeline downloads the raw TLC file automatically and regenerates all outputs from scratch.
@@ -255,7 +274,7 @@ FDE-ASST2/
 pip install -r requirements.txt
 ```
 
-> **Note on notebook vs. pipeline outputs**: The exploratory notebook (`notebooks/NYC_TLC_Analysis.ipynb`) was developed iteratively and produces 10 summary metrics. The standalone `pipeline.py` produces 11 metrics — it adds `Citywide Non-Airport Median Duration` as an explicit row because it is the denominator of the Zone Delay Index and should be surfaced clearly in the output. The validation logic, thresholds, and final analytical row counts are identical between the two.
+> **Note on notebook vs. pipeline outputs**: The exploratory notebook (`notebooks/NYC_TLC_Analysis.ipynb`) was developed iteratively and produces 10 summary metrics. The standalone `pipeline.py` produces 11 metrics - it adds `Citywide Non-Airport Median Duration` as an explicit row because it is the denominator of the Zone Delay Index and should be surfaced clearly in the output. The validation logic, thresholds, and final analytical row counts are identical between the two.
 
 ### Run the pipeline
 
@@ -271,6 +290,12 @@ python pipeline.py --year 2026 --month 6 --skip-download
 
 # Custom output directory
 python pipeline.py --year 2026 --month 6 --output-dir ./results/june-2026
+```
+
+### Run unit tests
+
+```bash
+pytest -v
 ```
 
 ### What the pipeline does (in order)
@@ -290,10 +315,10 @@ python pipeline.py --year 2026 --month 6 --output-dir ./results/june-2026
 
 ```
 output/2026-06/
-├── final_trips.parquet       ← 3,647,543 rows — enriched analytical dataset
+├── final_trips.parquet       ← 3,647,543 rows - enriched analytical dataset
 ├── final_kpis.csv            ← 11 summary metrics
-├── hourly_metrics.csv        ← 24 rows — trips, median, P90 by hour
-├── zone_kpi.csv              ← 79 rows — Zone Delay Index by pickup zone (June 2026)
+├── hourly_metrics.csv        ← 24 rows - trips, median, P90 by hour
+├── zone_kpi.csv              ← 79 rows - Zone Delay Index by pickup zone (June 2026)
 ├── quality_audit.csv         ← 7 validation/cleaning counts
 └── raw_provenance.csv        ← SHA-256 hashes of raw source files
 ```
