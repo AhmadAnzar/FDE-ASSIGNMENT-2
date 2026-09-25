@@ -1,0 +1,8 @@
+Check,Value
+Raw rows,3837248
+Core validation failures (any rule),176773
+Non-positive total amount removed,12932
+Final analytical rows,3647543
+Duplicate rows after zone join,0
+Unknown pickup zone,3654
+Unknown drop-off zone,3389

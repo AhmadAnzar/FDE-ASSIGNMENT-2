@@ -1,0 +1,6 @@
+# NYC TLC Zone Delay Analysis Pipeline — Python dependencies
+# Install with: pip install -r requirements.txt
+
+pandas>=2.0
+pyarrow>=14.0
+requests>=2.28

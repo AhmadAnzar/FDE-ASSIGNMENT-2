@@ -1,0 +1,19 @@
+# Raw and Parquet Data Files
+raw/
+*.parquet
+final_trips.parquet
+
+# Temporary & Pipeline Working Outputs
+output/
+tmp/
+scratch/
+
+# Python & Environment Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
