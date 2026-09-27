@@ -1,0 +1,21 @@
+2026-09-27 19:35:00  INFO      =================================================================
+2026-09-27 19:35:00  INFO      NYC TLC Zone Delay Analysis Pipeline
+2026-09-27 19:35:00  INFO      Processing : 2026-06
+2026-09-27 19:35:00  INFO      Output dir : output\2026-06
+2026-09-27 19:35:00  INFO      =================================================================
+2026-09-27 19:35:00  INFO      [Retrieval-1] --skip-download: using existing raw files
+2026-09-27 19:35:00  INFO      [Load] Reading trip data from raw_corrupted\yellow_tripdata_2026-06.parquet
+2026-09-27 19:35:00  INFO      [Load] Raw trip rows: 1000
+2026-09-27 19:35:00  INFO      [Retrieval-2] Loading zone lookup into SQLite: data\taxi_zone_lookup.csv
+2026-09-27 19:35:00  INFO      [Retrieval-2] Zone lookup: 265 rows returned via SQL
+2026-09-27 19:35:00  INFO      [Completeness] Checking retrieval completeness for 2026-06
+2026-09-27 19:35:00  INFO      [Completeness] 0 / 1000 rows (0.00%) have pickup in 2026-06
+2026-09-27 19:35:00  INFO      [Completeness] Pickup date range: 2025-01-01 to 2025-01-15
+Traceback (most recent call last):
+  File "pipeline.py", line 27, in <module>
+    main()
+  File "pipeline/cli.py", line 173, in main
+    check_retrieval_completeness(trips, args.year, args.month)
+  File "pipeline/ingest.py", line 110, in check_retrieval_completeness
+    assert pct_in_month >= 90.0, (
+AssertionError: RETRIEVAL INCOMPLETE: Only 0.0% of records fall within 2026-06. Expected >= 90%. File may be wrong month or corrupted.

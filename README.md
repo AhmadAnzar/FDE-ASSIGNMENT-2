@@ -166,6 +166,38 @@ stateDiagram-v2
     ZoneEnriched --> KPIOutput : Aggregated into Zone Delay Index
 ```
 
+### Operational Interactions, Interventions, and Outcomes
+
+```mermaid
+flowchart TD
+    subgraph S1["1. System Interactions"]
+        VENDORS["Taxi Technology Vendors (VeriFone / CMT)"] -->|Meter Telemetry & Fares| TLC_RAW["NYC TLC Data Repository"]
+        TLC_RAW -->|Monthly Trip Parquet| PIPELINE["Automated Pipeline Engine"]
+        ZONES_REF["Static Zone Lookup CSV"] -->|SQL Query Ingestion| PIPELINE
+    end
+
+    subgraph S2["2. Automated Governance & Quality Gate"]
+        PIPELINE --> GATE{"Validation & Completeness Gate"}
+        GATE -->|Completeness < 90% or Corrupt| HALT["Pipeline Halts with AssertionError\n(See docs/run_logs/validation_failure_example.log)"]
+        GATE -->|Passes All 7 Assertions| OUTPUTS["Validated Evidence Artifacts\n(Zone Delay Index, Hourly Profiles, Provenance)"]
+    end
+
+    subgraph S3["3. Stakeholder Interventions"]
+        OUTPUTS --> TLC_OPS["TLC Operations & Planning Team"]
+        OUTPUTS --> NYC_DOT["NYC DOT & Transit Partners"]
+
+        TLC_OPS -->|Prioritize High Delay Index (>= 2.0x)| INTERV1["Targeted Field Audit & Corridor Review\n(e.g., East Elmhurst 2.36x Investigation)"]
+        TLC_OPS -->|Peak Hour Demand (18:00)| INTERV2["Curbside Queue Management & Taxi Staging"]
+        NYC_DOT -->|Corridor Congestion Signal| INTERV3["Signal Timing Retiming & Bus/Taxi Lane Enforcement"]
+    end
+
+    subgraph S4["4. Operational Outcomes"]
+        INTERV1 --> OUT1["Root-Cause Diagnosis of Zone Bottlenecks"]
+        INTERV2 --> OUT2["Reduced Rider Queue Times at Peak Evening Demand"]
+        INTERV3 --> OUT3["Data-Backed Transportation Planning & Resource Allocation"]
+    end
+```
+
 ---
 
 ## Validation Rules
@@ -224,7 +256,8 @@ FDE-ASST2/
 │   └── cli.py                    ← Argument parsing, 7 assertions, runner & output saving
 ├── docs/                         ← Execution Run Logs
 │   └── run_logs/
-│       └── successful_run.log    ← Real verified June 2026 pipeline execution log
+│       ├── successful_run.log    ← Real verified June 2026 pipeline execution log
+│       └── validation_failure_example.log ← Real failure-handling execution log
 │
 ├── tests/                        ← Automated Unit Tests
 │   └── test_pipeline.py          ← 6 focused tests (validation, filtering, joins, KPIs)
@@ -240,6 +273,7 @@ FDE-ASST2/
 │   ├── hourly_metrics.csv        ← Hourly trip volumes and durations
 │   ├── zone_kpi.csv              ← Zone Delay Index ranking table
 │   ├── quality_audit.csv         ← Data quality audit counts
+│   ├── raw_provenance.csv        ← SHA-256 cryptographic digests of raw source files
 │   ├── hourly_trip_demand.png    ← Hourly demand distribution chart
 │   ├── hourly_duration.png       ← Hourly median vs P90 duration chart
 │   └── top_zone_delay_index.png  ← Top 10 high-delay zones chart

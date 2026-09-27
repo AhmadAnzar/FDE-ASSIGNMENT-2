@@ -149,7 +149,17 @@ def main() -> None:
     # ── Step 1: Retrieve (Mode 1 - HTTP download) ─────────────────────────────
     digests: dict = {}
     if args.skip_download and trips_path.exists() and zones_path.exists():
-        log.info("[Retrieval-1] --skip-download: using existing raw files in %s", args.raw_dir)
+        log.info("[Retrieval-1] --skip-download: using existing raw files (trips: %s, zones: %s)",
+                 trips_path, zones_path)
+        import hashlib
+        def _hash(p: Path) -> str:
+            h = hashlib.sha256()
+            with open(p, "rb") as fh:
+                for chunk in iter(lambda: fh.read(1 << 20), b""):
+                    h.update(chunk)
+            return h.hexdigest()
+        digests["yellow_tripdata"] = _hash(trips_path)
+        digests["taxi_zone_lookup"] = _hash(zones_path)
     else:
         digests["yellow_tripdata"] = download_file(trips_url, trips_path)
         digests["taxi_zone_lookup"] = download_file(TLC_ZONES_URL, zones_path)
