@@ -33,12 +33,12 @@ This pipeline does **not** claim to diagnose *why* a zone is delayed, nor does i
 
 ```
 Zone Delay Index = zone median trip duration (min)
-                  ──────────────────────────────────────────────
+                  ----------------------------------------------
                   citywide non-airport median trip duration (min)
 ```
 
 - A value of **1.0** means the zone's median trip duration equals the citywide non-airport norm
-- A value of **2.0** means trips from that zone take twice as long as the citywide norm, on average
+- A value of **2.0** means trips from that zone take twice as long as the citywide norm, on median. 
 - Airport zones (JFK, LaGuardia, Newark) are excluded from the baseline and the zone ranking because they represent a categorically different trip type (long-haul, fixed-route)
 
 ---

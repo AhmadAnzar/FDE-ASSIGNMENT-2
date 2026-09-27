@@ -1,4 +1,4 @@
-﻿2026-09-25 21:06:52  INFO      =================================================================
+2026-09-25 21:06:52  INFO      =================================================================
 2026-09-25 21:06:52  INFO      NYC TLC Zone Delay Analysis Pipeline
 2026-09-25 21:06:52  INFO      Processing : 2026-06
 2026-09-25 21:06:52  INFO      Output dir : output\2026-06
@@ -26,20 +26,20 @@
 2026-09-25 21:06:55  INFO      [Metrics] Calculating KPIs
 2026-09-25 21:06:56  INFO      [Metrics] Citywide non-airport median trip duration: 13.60 min
 2026-09-25 21:06:57  INFO      [Metrics] Zone KPI table: 79 qualifying zones (>= 3000 trips)
-2026-09-25 21:06:57  INFO      [Metrics] Highest delay zone: East Elmhurst (2.36╫)
+2026-09-25 21:06:57  INFO      [Metrics] Highest delay zone: East Elmhurst (2.36x)
 2026-09-25 21:07:03  INFO      [Assert] Running pipeline integrity checks
 2026-09-25 21:07:07  INFO      [Assert] All 7 assertions PASSED
-2026-09-25 21:07:07  WARNING   [Save] Output directory output\2026-06 already exists ù files will be overwritten
+2026-09-25 21:07:07  WARNING   [Save] Output directory output\2026-06 already exists - files will be overwritten
 2026-09-25 21:07:11  INFO      [Save] final_trips.parquet  (91771226 bytes)
 2026-09-25 21:07:11  INFO      [Save] hourly_metrics.csv  (956 bytes)
 2026-09-25 21:07:11  INFO      [Save] zone_kpi.csv  (6785 bytes)
 2026-09-25 21:07:11  INFO      [Save] final_kpis.csv  (397 bytes)
 2026-09-25 21:07:11  INFO      [Save] quality_audit.csv  (235 bytes)
 2026-09-25 21:07:11  INFO      =================================================================
-2026-09-25 21:07:11  INFO      Pipeline completed successfully ù 2026-06
+2026-09-25 21:07:11  INFO      Pipeline completed successfully - 2026-06
 2026-09-25 21:07:11  INFO      Raw rows              : 3837248
 2026-09-25 21:07:11  INFO      Validated rows        : 3660475  (95.39%)
 2026-09-25 21:07:11  INFO      Final analytical rows : 3647543  (95.06%)
-2026-09-25 21:07:11  INFO      Zone Delay Index ù top zone: East Elmhurst  2.36╫
+2026-09-25 21:07:11  INFO      Zone Delay Index - top zone: East Elmhurst  2.36x
 2026-09-25 21:07:11  INFO      Outputs saved to      : output\2026-06
 2026-09-25 21:07:11  INFO      =================================================================
