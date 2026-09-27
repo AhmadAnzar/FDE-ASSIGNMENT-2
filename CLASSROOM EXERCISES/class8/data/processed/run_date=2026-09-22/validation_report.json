@@ -1,0 +1,30 @@
+{
+  "status": "WARN",
+  "checks": {
+    "required_columns": {
+      "status": "PASS"
+    },
+    "critical_nulls": {
+      "status": "WARN",
+      "missing_actual_delivery": 37
+    },
+    "order_uniqueness": {
+      "status": "WARN",
+      "duplicate_rows": 8
+    },
+    "freshness": {
+      "latest_order_time": "2026-08-28 23:33:00",
+      "age_days": 24,
+      "max_allowed_days": 60,
+      "status": "PASS"
+    },
+    "api_retrieval": {
+      "status": "PASS",
+      "records_retrieved": 1600
+    }
+  },
+  "warnings": [
+    "37 delivered orders lack completion timestamps (actual_delivery_at).",
+    "Found 8 duplicate rows across orders (1608 total rows, 1600 unique IDs)."
+  ]
+}

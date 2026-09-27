@@ -32,10 +32,16 @@ This repository brings together two main projects:
     │   ├── data/                          # Metric definitions JSON, restaurant status CSV
     │   ├── database/                      # flasheats.db SQLite database
     │   └── FlashEats_Class6_Student.ipynb # Validation gate notebook with solutions
-    └── class7/                            # Class 7: Workflow-centric data modeling
-        ├── data/                          # Customer app actions, interventions, outcomes CSVs
-        ├── database/                      # flasheats.db SQLite database
-        └── FlashEats_Class7_Challenge.ipynb # Workflow model notebook with solutions
+    ├── class7/                            # Class 7: Workflow-centric data modeling
+    │   ├── data/                          # Customer app actions, interventions, outcomes CSVs
+    │   ├── database/                      # flasheats.db SQLite database
+    │   └── FlashEats_Class7_Challenge.ipynb # Workflow model notebook with solutions
+    └── class8/                            # Class 8: Dependable pipeline & Data Readiness Review
+        ├── pipeline/                      # Modular pipeline package (ingest, gate, cleanse, model, storage, logger)
+        ├── run_pipeline.py                # Standalone pipeline CLI runner
+        ├── FlashEats_Class8_Walkthrough.ipynb # Walkthrough notebook with solutions
+        ├── GATE2_DATA_READINESS.md        # Gate 2 Data Readiness Review
+        └── TROUBLESHOOTING.md             # Pipeline runbook and troubleshooting guide
 ```
 
 ---
@@ -70,7 +76,7 @@ All generated summary tables (`zone_kpi.csv`, `hourly_metrics.csv`, `quality_aud
 
 ## 2. Classroom Exercises: FlashEats Case Study
 
-The FlashEats case study explores a food delivery company dealing with rising late deliveries. Leadership initially wants to build an "AI delay predictor." Across three classes, we investigate the data to see whether that makes sense or if other bottlenecks are at play.
+The FlashEats case study explores a food delivery company dealing with rising late deliveries. Leadership initially wants to build an "AI delay predictor." Across four classes, we investigate the data to see whether that makes sense or if other bottlenecks are at play.
 
 ### Class 5: Data Retrieval & Problem Sizing
 - **Goal**: Ingest data from four distinct sources (SQLite database, CSV support tickets, nested JSON driver events, and a paginated REST API with rate limits) to size the late delivery problem.
@@ -96,11 +102,20 @@ The FlashEats case study explores a food delivery company dealing with rising la
   - Built an order-level unified table linking customer app friction (ETA views, support opens, cancellation attempts) with operational interventions (driver reassignment, restaurant contact, priority dispatch).
   - Discovered that late rates are identical with or without intervention (56.4%), proving interventions are currently triggered reactively after the order is already late. Priority dispatch performed best among interventions (51.2% late rate).
 
+### Class 8: Building a Dependable Pipeline & Gate 2 Review
+- **Goal**: Turn the exploratory analysis into an automated, production-ready pipeline and conduct the executive Gate 2 Review on AI readiness.
+- **Core Findings**:
+  - Built modular stages (`extract`, `validate`, `clean`, `transform`, `save`, `log`) running with a single CLI command: `python run_pipeline.py --run-date 2026-09-22`.
+  - Implemented bounded retries with exponential backoff, recovering gracefully from Dispatch API rate limits (HTTP 429) and server errors (HTTP 500).
+  - Proved idempotency: rerunning the pipeline overwrote partitions cleanly with atomic writes (`os.replace`), maintaining exactly 1,600 unique rows without duplication.
+  - Tested controlled failure modes: breaking required columns or exceeding freshness SLAs triggered the Validation Gate to exit with code 2 and write zero output files.
+- **Gate 2 Verdict**: **NOT READY FOR AI MODELING.** Daily reporting can run now, but AI delay prediction must wait until kitchen arrival/ready timestamps are instrumented and KPI ownership is formally resolved.
+
 ---
 
 ## Prerequisites & Installation
 
-To run both projects locally, use a Python 3.10+ environment:
+To run the projects locally, use a Python 3.10+ environment:
 
 ```bash
 # Clone the repository

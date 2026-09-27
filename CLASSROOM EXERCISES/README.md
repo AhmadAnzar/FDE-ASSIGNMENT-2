@@ -1,1 +1,1 @@
-this folder contains questions and code for the classes -5, 6 and 7 classroom activities and homework.
+this folder contains questions and code for classes 5, 6, 7, and 8 classroom activities and homework.

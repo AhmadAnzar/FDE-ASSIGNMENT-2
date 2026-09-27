@@ -1,0 +1,261 @@
+2026-09-27 20:40:36 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:36 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:40:36 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:40:38 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:40:38 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:40:40 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:40:41 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:40:41 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 3 duplicate rows across orders (1603 total rows, 1600 unique IDs).
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - Validation Gate completed with status: WARN
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - >>> STAGE 3: CLEAN
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - Cleaned orders: removed 3 duplicate rows (1603 -> 1600)
+2026-09-27 20:40:41 [INFO] flasheats_pipeline - >>> STAGE 4: TRANSFORM
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Built unified order journey table: 1600 rows
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Computed KPIs for 2026-09-22: Late Rate=56.39%, Median Delay=8.03m, Friction=18.38%
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - >>> STAGE 5: SAVE
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Atomically saved CSV to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv (1600 rows)
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\validation_report.json
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - PIPELINE COMPLETED SUCCESSFULLY (Exit Code 0)
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Published order journey: C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - Published daily KPIs:    C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:40:42 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:56 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:56 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:40:56 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:40:58 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:40:59 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:40:59 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:40:59 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:41:00 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:41:01 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:41:01 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: missing_column !!!
+2026-09-27 20:41:01 [WARNING] flasheats_pipeline - Dropped required column 'promised_eta' from orders dataset.
+2026-09-27 20:41:01 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:41:01 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:41:01 [ERROR] flasheats_pipeline - VALIDATION FAILED: orders: missing required columns: ['promised_eta']
+2026-09-27 20:41:01 [ERROR] flasheats_pipeline - Pipeline stopped at validation gate. Critical data quality contract violated!
+2026-09-27 20:41:01 [ERROR] flasheats_pipeline - Reason: orders: missing required columns: ['promised_eta']
+2026-09-27 20:41:01 [INFO] flasheats_pipeline - No processed output written. Halting execution with exit code 2.
+2026-09-27 20:41:13 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:41:13 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:41:13 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:41:15 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:41:15 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:41:16 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:41:18 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:41:18 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: stale_data !!!
+2026-09-27 20:41:18 [WARNING] flasheats_pipeline - Shifted order creation timestamps back by 400 days to violate freshness SLA.
+2026-09-27 20:41:18 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:41:18 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:41:18 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:41:18 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 3 duplicate rows across orders (1603 total rows, 1600 unique IDs).
+2026-09-27 20:41:18 [ERROR] flasheats_pipeline - VALIDATION FAILED: Data is too stale: latest order is 424 days old (max allowed is 60 days).
+2026-09-27 20:41:18 [ERROR] flasheats_pipeline - Pipeline stopped at validation gate. Critical data quality contract violated!
+2026-09-27 20:41:18 [ERROR] flasheats_pipeline - Reason: Data is too stale: latest order is 424 days old (max allowed is 60 days).
+2026-09-27 20:41:18 [INFO] flasheats_pipeline - No processed output written. Halting execution with exit code 2.
+2026-09-27 20:41:28 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:41:28 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:41:28 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:41:29 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:41:30 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:41:30 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:41:31 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:41:32 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:41:32 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: duplicate_order !!!
+2026-09-27 20:41:32 [WARNING] flasheats_pipeline - Injected 5 extra duplicate rows into orders dataset.
+2026-09-27 20:41:32 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:41:32 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:41:33 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:41:33 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 8 duplicate rows across orders (1608 total rows, 1600 unique IDs).
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Validation Gate completed with status: WARN
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - >>> STAGE 3: CLEAN
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Cleaned orders: removed 8 duplicate rows (1608 -> 1600)
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - >>> STAGE 4: TRANSFORM
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Built unified order journey table: 1600 rows
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Computed KPIs for 2026-09-22: Late Rate=56.39%, Median Delay=8.03m, Friction=18.38%
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - >>> STAGE 5: SAVE
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Atomically saved CSV to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv (1600 rows)
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\validation_report.json
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - PIPELINE COMPLETED SUCCESSFULLY (Exit Code 0)
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Published order journey: C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - Published daily KPIs:    C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:41:33 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:35 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:35 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:43:35 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:43:37 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:43:37 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:43:38 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:43:40 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:43:40 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 3 duplicate rows across orders (1603 total rows, 1600 unique IDs).
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - Validation Gate completed with status: WARN
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - >>> STAGE 3: CLEAN
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - Cleaned orders: removed 3 duplicate rows (1603 -> 1600)
+2026-09-27 20:43:40 [INFO] flasheats_pipeline - >>> STAGE 4: TRANSFORM
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Built unified order journey table: 1600 rows
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Computed KPIs for 2026-09-22: Late Rate=56.39%, Median Delay=8.03m, Friction=18.38%
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - >>> STAGE 5: SAVE
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Atomically saved CSV to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv (1600 rows)
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\validation_report.json
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - PIPELINE COMPLETED SUCCESSFULLY (Exit Code 0)
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Published order journey: C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - Published daily KPIs:    C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:43:41 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:42 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:42 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:43:42 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:43 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:43:44 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:43:44 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:43:45 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:43:46 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:43:46 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 3 duplicate rows across orders (1603 total rows, 1600 unique IDs).
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - Validation Gate completed with status: WARN
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - >>> STAGE 3: CLEAN
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - Cleaned orders: removed 3 duplicate rows (1603 -> 1600)
+2026-09-27 20:43:46 [INFO] flasheats_pipeline - >>> STAGE 4: TRANSFORM
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Built unified order journey table: 1600 rows
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Computed KPIs for 2026-09-22: Late Rate=56.39%, Median Delay=8.03m, Friction=18.38%
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - >>> STAGE 5: SAVE
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Atomically saved CSV to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv (1600 rows)
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\validation_report.json
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - PIPELINE COMPLETED SUCCESSFULLY (Exit Code 0)
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Published order journey: C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - Published daily KPIs:    C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:43:47 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:48 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:48 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:43:48 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:43:50 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:43:50 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:43:51 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:43:53 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:43:53 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: missing_column !!!
+2026-09-27 20:43:53 [WARNING] flasheats_pipeline - Dropped required column 'promised_eta' from orders dataset.
+2026-09-27 20:43:53 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:43:53 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:43:53 [ERROR] flasheats_pipeline - VALIDATION FAILED: orders: missing required columns: ['promised_eta']
+2026-09-27 20:43:53 [ERROR] flasheats_pipeline - Pipeline stopped at validation gate. Critical data quality contract violated!
+2026-09-27 20:43:53 [ERROR] flasheats_pipeline - Reason: orders: missing required columns: ['promised_eta']
+2026-09-27 20:43:53 [INFO] flasheats_pipeline - No processed output written. Halting execution with exit code 2.
+2026-09-27 20:43:54 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:54 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:43:54 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:55 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:43:56 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:43:56 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:43:57 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:43:58 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:43:58 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: stale_data !!!
+2026-09-27 20:43:58 [WARNING] flasheats_pipeline - Shifted order creation timestamps back by 400 days to violate freshness SLA.
+2026-09-27 20:43:58 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:43:58 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:43:58 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:43:58 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 3 duplicate rows across orders (1603 total rows, 1600 unique IDs).
+2026-09-27 20:43:58 [ERROR] flasheats_pipeline - VALIDATION FAILED: Data is too stale: latest order is 424 days old (max allowed is 60 days).
+2026-09-27 20:43:58 [ERROR] flasheats_pipeline - Pipeline stopped at validation gate. Critical data quality contract violated!
+2026-09-27 20:43:58 [ERROR] flasheats_pipeline - Reason: Data is too stale: latest order is 424 days old (max allowed is 60 days).
+2026-09-27 20:43:58 [INFO] flasheats_pipeline - No processed output written. Halting execution with exit code 2.
+2026-09-27 20:43:59 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:43:59 [INFO] flasheats_pipeline - STARTING FLASHEATS PIPELINE RUN (run_date=2026-09-22)
+2026-09-27 20:43:59 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Starting local mock Dispatch API process...
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Mock Dispatch API successfully started.
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - >>> STAGE 1: EXTRACT
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Connecting to SQLite database at flasheats.db
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Extracted 1603 orders, 60 restaurants, 120 drivers
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Loading CSV files from data
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Extracted 2365 actions, 430 interventions, 202 support tickets
+2026-09-27 20:44:01 [INFO] flasheats_pipeline - Beginning paginated extraction from http://127.0.0.1:8000/dispatch/orders (page_size=50)
+2026-09-27 20:44:01 [WARNING] flasheats_pipeline - Page 3: HTTP 500 server error. Backing off 1.0s (attempt 1/3)
+2026-09-27 20:44:02 [WARNING] flasheats_pipeline - Page 5: HTTP 429 Rate Limited. Sleeping 1.0s before retry (attempt 1/3)
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Completed dispatch API extraction: 1600 records across 32 pages (reported total: 1600)
+2026-09-27 20:44:04 [WARNING] flasheats_pipeline - !!! INJECTING CHAOS DEFECT: duplicate_order !!!
+2026-09-27 20:44:04 [WARNING] flasheats_pipeline - Injected 5 extra duplicate rows into orders dataset.
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - >>> STAGE 2: VALIDATE
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Executing Validation Gate checks...
+2026-09-27 20:44:04 [WARNING] flasheats_pipeline - VALIDATION WARNING: 37 delivered orders lack completion timestamps (actual_delivery_at).
+2026-09-27 20:44:04 [WARNING] flasheats_pipeline - VALIDATION WARNING: Found 8 duplicate rows across orders (1608 total rows, 1600 unique IDs).
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Validation Gate completed with status: WARN
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - >>> STAGE 3: CLEAN
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Cleaned orders: removed 8 duplicate rows (1608 -> 1600)
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - >>> STAGE 4: TRANSFORM
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Built unified order journey table: 1600 rows
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - Computed KPIs for 2026-09-22: Late Rate=56.39%, Median Delay=8.03m, Friction=18.38%
+2026-09-27 20:44:04 [INFO] flasheats_pipeline - >>> STAGE 5: SAVE
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - Atomically saved CSV to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv (1600 rows)
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - Atomically saved JSON to C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\validation_report.json
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - ============================================================
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - PIPELINE COMPLETED SUCCESSFULLY (Exit Code 0)
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - Published order journey: C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\order_journey.csv
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - Published daily KPIs:    C:\Users\mdanz\OneDrive\Desktop\FDE-ASST2\CLASSROOM EXERCISES\class8\data\processed\run_date=2026-09-22\metrics.json
+2026-09-27 20:44:05 [INFO] flasheats_pipeline - ============================================================

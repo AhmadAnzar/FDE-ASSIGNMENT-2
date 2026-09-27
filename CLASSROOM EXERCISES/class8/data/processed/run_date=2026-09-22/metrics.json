@@ -1,0 +1,13 @@
+{
+  "run_date": "2026-09-22",
+  "total_unique_orders": 1600,
+  "cancelled_orders": 68,
+  "unrecorded_delivery_orders": 37,
+  "measurable_delivered_orders": 1495,
+  "late_delivered_orders": 843,
+  "late_delivery_rate_pct": 56.39,
+  "median_late_delay_min": 8.03,
+  "customer_friction_rate_pct": 18.38,
+  "operational_intervention_rate_pct": 26.88,
+  "intervention_recovery_rate_pct": 43.56
+}
