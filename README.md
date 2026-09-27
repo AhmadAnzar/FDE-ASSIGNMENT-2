@@ -82,10 +82,14 @@ graph TD
 
 ### Source Details
 
-| Source | Owner | Grain | Format | Key Fields | Retrieval Mode |
+| Source | Owner | Grain | Format | Direct Download / Access | Retrieval Mode |
 |---|---|---|---|---|---|
-| NYC TLC Yellow Trip Data (monthly) | NYC TLC (public) | 1 row = 1 metered trip | Parquet | pickup/dropoff datetime, location IDs, distance, fare/total amount | HTTP download (requests) |
-| NYC TLC Taxi Zone Lookup | NYC TLC (public, static) | 1 row = 1 zone ID | CSV → SQLite | LocationID, Borough, Zone, service_zone | SQL query (sqlite3 in-memory via data/taxi_zone_lookup.csv) |
+| NYC TLC Yellow Trip Data (June 2026) | NYC TLC (public) | 1 row = 1 metered trip | Parquet (~87.5 MB) | [yellow_tripdata_2026-06.parquet](https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2026-06.parquet) | Automated HTTP download via `pipeline.py` |
+| NYC TLC Taxi Zone Lookup | NYC TLC (public, static) | 1 row = 1 zone ID | CSV (committed) | [`data/taxi_zone_lookup.csv`](data/taxi_zone_lookup.csv) | Loaded into in-memory SQLite and queried via SQL |
+
+> **Raw Data Access & Verification**:
+> Due to GitHub's file size best practices, the 87.5 MB raw trip Parquet is excluded from git via `.gitignore`. You can download it directly via the link above or run `python pipeline.py` to retrieve it automatically. Its cryptographic integrity is verifiable against the SHA-256 hash recorded in [`outputs/raw_provenance.csv`](outputs/raw_provenance.csv):
+> `f340c62a18885c56176433c9db28e97d0a8a14e6e49869276ad8afb20ebf088b`
 
 ### Important Source Gaps
 
@@ -171,30 +175,30 @@ stateDiagram-v2
 ```mermaid
 flowchart TD
     subgraph S1["1. System Interactions"]
-        VENDORS["Taxi Technology Vendors (VeriFone / CMT)"] -->|Meter Telemetry & Fares| TLC_RAW["NYC TLC Data Repository"]
+        VENDORS["Taxi Technology Vendors (VeriFone / CMT)"] -->|Meter Telemetry and Fares| TLC_RAW["NYC TLC Data Repository"]
         TLC_RAW -->|Monthly Trip Parquet| PIPELINE["Automated Pipeline Engine"]
         ZONES_REF["Static Zone Lookup CSV"] -->|SQL Query Ingestion| PIPELINE
     end
 
-    subgraph S2["2. Automated Governance & Quality Gate"]
-        PIPELINE --> GATE{"Validation & Completeness Gate"}
-        GATE -->|Completeness < 90% or Corrupt| HALT["Pipeline Halts with AssertionError\n(See docs/run_logs/validation_failure_example.log)"]
-        GATE -->|Passes All 7 Assertions| OUTPUTS["Validated Evidence Artifacts\n(Zone Delay Index, Hourly Profiles, Provenance)"]
+    subgraph S2["2. Automated Governance and Quality Gate"]
+        PIPELINE --> GATE{"Validation and Completeness Gate"}
+        GATE -->|Under 90 Percent Complete or Corrupt| HALT["Pipeline Halts with AssertionError<br/>(See docs/run_logs/validation_failure_example.log)"]
+        GATE -->|Passes All 7 Assertions| OUTPUTS["Validated Evidence Artifacts<br/>(Zone Delay Index, Hourly Profiles, Provenance)"]
     end
 
     subgraph S3["3. Stakeholder Interventions"]
-        OUTPUTS --> TLC_OPS["TLC Operations & Planning Team"]
-        OUTPUTS --> NYC_DOT["NYC DOT & Transit Partners"]
+        OUTPUTS --> TLC_OPS["TLC Operations and Planning Team"]
+        OUTPUTS --> NYC_DOT["NYC DOT and Transit Partners"]
 
-        TLC_OPS -->|Prioritize High Delay Index (>= 2.0x)| INTERV1["Targeted Field Audit & Corridor Review\n(e.g., East Elmhurst 2.36x Investigation)"]
-        TLC_OPS -->|Peak Hour Demand (18:00)| INTERV2["Curbside Queue Management & Taxi Staging"]
-        NYC_DOT -->|Corridor Congestion Signal| INTERV3["Signal Timing Retiming & Bus/Taxi Lane Enforcement"]
+        TLC_OPS -->|Delay Index 2.0x or Higher| INTERV1["Targeted Field Audit and Corridor Review<br/>(e.g., East Elmhurst 2.36x Investigation)"]
+        TLC_OPS -->|Peak Evening Demand at 18:00| INTERV2["Curbside Queue Management and Taxi Staging"]
+        NYC_DOT -->|Corridor Congestion Signal| INTERV3["Signal Timing Retiming and Dedicated Taxi Lanes"]
     end
 
     subgraph S4["4. Operational Outcomes"]
         INTERV1 --> OUT1["Root-Cause Diagnosis of Zone Bottlenecks"]
         INTERV2 --> OUT2["Reduced Rider Queue Times at Peak Evening Demand"]
-        INTERV3 --> OUT3["Data-Backed Transportation Planning & Resource Allocation"]
+        INTERV3 --> OUT3["Data-Backed Transportation Planning and Resource Allocation"]
     end
 ```
 
