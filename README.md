@@ -190,7 +190,7 @@ stateDiagram-v2
 |---|---|---|
 | **Known** | 4.61% validation failure rate (176,773 rows) | Driven by zero/negative distance (128,106) and duration <= 0 (49,807). Flagged via `is_valid`, not silently dropped. |
 | | 12,932 records with `total_amount <= 0` | Secondary billing filter; excluded as non-revenue adjustments, cancellations, or refunds. |
-| | 3,654 PU and 3,389 DO zones with missing metadata | LocationID 264/265 ("N/A"); retained in totals with zone filled as "Unknown", excluded from zone rankings. |
+| | 3,654 PU and 3,389 DO zones with missing metadata | LocationID 264/265 ("N/A"); retained with zone filled as "Unknown" (LocationID 264 qualifies with 3,654 trips, excluded from operational recommendations). |
 | | Zone qualification threshold: >= 3,000 trips | Excludes thin-sample zones so small-number variance does not generate false delay signals (79 zones qualify). |
 | **Unknown** | Causal mechanism behind high delay | Telemetry does not record road construction, street-level bottlenecks, route choice, or weather. |
 | | Temporal representativeness | Single-month cross-section; cannot determine whether June 2026 patterns persist seasonally. |

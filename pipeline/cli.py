@@ -142,6 +142,8 @@ def main() -> None:
     # ── Paths ─────────────────────────────────────────────────────────────────
     trips_path    = args.raw_dir / f"yellow_tripdata_{month_id}.parquet"
     zones_path    = args.raw_dir / "taxi_zone_lookup.csv"
+    if not zones_path.exists() and Path("data/taxi_zone_lookup.csv").exists():
+        zones_path = Path("data/taxi_zone_lookup.csv")
     trips_url     = f"{TLC_BASE_URL}/yellow_tripdata_{month_id}.parquet"
 
     # ── Step 1: Retrieve (Mode 1 - HTTP download) ─────────────────────────────
